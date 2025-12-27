@@ -1,34 +1,42 @@
 package br.com.domFelipe.screenMusicProject.model;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "tb_artistas")
 public class Artista {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String nome;
-	private LocalDate nascimento;
 
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private Categoria categoria;
 
-	@ManyToOne()
+	@OneToMany(mappedBy = "artista")
 	private List<Musica> musicas;
 
 	public Artista() {
 	}
 
-	public Artista(String nome, LocalDate nascimento) {
+	public Artista(String nome) {
 		this.nome = nome;
-		this.nascimento = nascimento;
+	}
+
+	public Artista(String nome, Categoria categoria) {
+		this.categoria = categoria;
+		this.nome = nome;
 	}
 
 	public Long getId() {
@@ -39,10 +47,6 @@ public class Artista {
 		return nome;
 	}
 
-	public LocalDate getNascimento() {
-		return nascimento;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -50,15 +54,28 @@ public class Artista {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	
 
-	public void setNascimento(LocalDate nascimento) {
-		this.nascimento = nascimento;
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public List<Musica> getMusicas() {
+		return musicas;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public void setMusicas(List<Musica> musicas) {
+		this.musicas = musicas;
 	}
 
 	@Override
 	public String toString() {
-		return "Artista [nome=" + nome + ", nascimento=" + nascimento + ", categoria=" + categoria + ", musicas="
-				+ musicas + "]";
+		return "Artista [nome=" + nome + ", categoria=" + categoria + "]";
 	}
 
 }
